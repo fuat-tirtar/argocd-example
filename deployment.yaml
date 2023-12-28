@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: keycloak
-        image: quay.io/keycloak/keycloak:latest
+        image: docker.io/jboss/keycloak:latest
         ports:
         - containerPort: 8080
         env:
