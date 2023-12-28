@@ -1,20 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-deployment
-  namespace: redis
+  name: keycloak
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: keycloak
   template:
     metadata:
       labels:
-        app: redis
+        app: keycloak
     spec:
       containers:
-      - name: redis
-        image: docker.io/library/redis:latest
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:latest
         ports:
-        - containerPort: 6379
+        - containerPort: 8080
+        env:
+        - name: KEYCLOAK_USER
+          value: admin
+        - name: KEYCLOAK_PASSWORD
+          value: admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-service
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
